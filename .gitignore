@@ -1,0 +1,9 @@
+data-raw/
+census_targets_cache/
+census_targets_files/
+census_targets.knit.md
+census_targets.html
+.Rhistory
+.RData
+.Rproj.user
+.DS_Store
