@@ -156,7 +156,7 @@ collapse_race_1819 <- function(data, mapping, scheme) {
 Builds two long/tidy U.S. Census Bureau Population Estimates Program (PEP)
 population-target CSVs for raking/post-stratification, 1900-2024, by Year,
 RaceScheme, Race, Sex, AgeGroup, and (from 1980 on) HispanicOrigin:
-`census_targets_by_age.csv` (all ages) and `census_targets_adults_by_age.csv`
+`census_targets.csv` (all ages) and `census_targets_adults.csv`
 (ages 18+). Every input is downloaded directly from Census (cached under
 `data-raw/`, gitignored, so repeated renders don't re-fetch); every chunk is
 knitr-cached and `dependson`-chained so an unchanged upstream re-knits fast.
@@ -1554,7 +1554,7 @@ census_targets_final_by_age <- bind_rows(
 
 write_csv(
   census_targets_final_by_age,
-  file.path(artifacts_dir, "census_targets_by_age.csv")
+  file.path(artifacts_dir, "census_targets.csv")
 )
 ```
 
@@ -1671,7 +1671,7 @@ census_targets_final_adults_by_age <- bind_rows(
 
 write_csv(
   census_targets_final_adults_by_age,
-  file.path(artifacts_dir, "census_targets_adults_by_age.csv")
+  file.path(artifacts_dir, "census_targets_adults.csv")
 )
 ```
 

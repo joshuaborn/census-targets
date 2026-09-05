@@ -13,14 +13,14 @@ This repository contains two files that collect counts of the resident populatio
 
 The two files are
 
-- [`census_targets_by_age.csv`](https://github.com/joshuaborn/census-targets/releases/download/v1.0.0/census_targets_by_age.csv)
-- [`census_targets_adults_by_age.csv`](https://github.com/joshuaborn/census-targets/releases/download/v1.0.0/census_targets_adults_by_age.csv)
+- [`census_targets.csv`](https://github.com/joshuaborn/census-targets/releases/download/v1.0.1/census_targets.csv)
+- [`census_targets_adults.csv`](https://github.com/joshuaborn/census-targets/releases/download/v1.0.1/census_targets_adults.csv)
 
 Both links point to the latest release, so most statistical programming languages can read the file directly from the URL without a separate download step; see "Example Programs" below.
 
-The PEP age groups have a group for 15 to 19 years of age. For raking surveys of adults, this group needs to be broken down into a group for 18 to 19 years of age, which is why the second `census_targets_adults_by_age.csv` file exists.
+The PEP age groups have a group for 15 to 19 years of age. For raking surveys of adults, this group needs to be broken down into a group for 18 to 19 years of age, which is why the second `census_targets_adults.csv` file exists.
 
-If you want only counts of adults, use `census_targets_adults_by_age.csv`. Otherwise, use `census_targets_by_age.csv`.
+If you want only counts of adults, use `census_targets_adults.csv`. Otherwise, use `census_targets.csv`.
 
 ### Picking a Race Categorization Scheme
 
@@ -58,7 +58,7 @@ library(readr)
 library(dplyr)
 library(tidyr)
 
-targets <- read_csv("census_targets_adults_by_age.csv") |>
+targets <- read_csv("census_targets_adults.csv") |>
   filter(RaceScheme == "race3", Year >= 1972, Year <= 2024) |>
   group_by(Year, Race, Sex, AgeGroup) |>
   summarize(Population = sum(Population), .groups = "drop")
@@ -72,7 +72,7 @@ targets_wide <- targets |>
 #### SAS
 
 ```sas
-proc import datafile="census_targets_adults_by_age.csv"
+proc import datafile="census_targets_adults.csv"
     out=targets_raw dbms=csv replace;
     getnames=yes;
 run;
@@ -109,7 +109,7 @@ run;
 #### Stata
 
 ```stata
-import delimited "census_targets_adults_by_age.csv", clear
+import delimited "census_targets_adults.csv", clear
 
 keep if racescheme == "race3" & year >= 1972 & year <= 2024
 
@@ -126,7 +126,7 @@ reshape wide population, i(year) j(cell) string
 
 ```spss
 GET DATA /TYPE=TXT
-  /FILE="census_targets_adults_by_age.csv"
+  /FILE="census_targets_adults.csv"
   /DELCASE=LINE
   /DELIMITERS=","
   /QUALIFIER='"'
@@ -157,7 +157,7 @@ CASESTOVARS
 ```python
 import pandas as pd
 
-targets = pd.read_csv("census_targets_adults_by_age.csv")
+targets = pd.read_csv("census_targets_adults.csv")
 targets = targets[
     (targets["RaceScheme"] == "race3")
     & (targets["Year"] >= 1972)
