@@ -258,12 +258,8 @@ Despite being the wrong approach, using the ACS for census targets is common adv
 
 - [How different weighting methods work (Pew Research Center)](https://www.pewresearch.org/methods/2018/01/26/how-different-weighting-methods-work/)
 - [Weighting survey data with the pewmethods R package (Pew Research Center)](https://www.pewresearch.org/decoded/2020/03/26/weighting-survey-data-with-the-pewmethods-r-package/)
-- [`anesrake` CRAN documentation](https://cran.r-project.org/web/packages/anesrake/anesrake.pdf)
-- [Survey Raking: An Illustration (R-bloggers)](https://www.r-bloggers.com/2018/12/survey-raking-an-illustration/)
 - [Calibrating survey data using iterative proportional fitting (`ipfraking`, Boston College RePEc)](http://fmwww.bc.edu/RePEc/bocode/i/ipfraking-v32.pdf)
-- [Rake Weighting: How to Weight Survey Data with Multiple Variables (MeasuringU)](https://measuringu.com/rake-weighting-how-to-weight-survey-data-with-multiple-variables/)
 - [Survey Weighting in R: Using Rake Weights to Adjust Samples to Population Demographics (RStudio Pubs)](https://rstudio-pubs-static.s3.amazonaws.com/1244160_2e818bffbd0a44fda1fa450edc8199d2.html)
-- [Weighting Data in R (Medium, "Survey Skills in R")](https://medium.com/@coraghenry/survey-skills-in-r-6c99e31a05e7)
 
 There are three main issues with the use of the ACS for targets. They all stem from the fact that the ACS is itself a survey, and we should be using census counts for targets, not estimates from another survey.
 
