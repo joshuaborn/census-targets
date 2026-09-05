@@ -11,16 +11,18 @@ This repository contains two files that collect counts of the resident populatio
 
 ### Picking a File
 
-The two files are
+If you're using a statistical programming language (R, Python, SAS, Stata, SPSS), use one of the two long-table files:
 
 - [`census_targets.csv`](https://github.com/joshuaborn/census-targets/releases/download/v1.0.1/census_targets.csv)
 - [`census_targets_adults.csv`](https://github.com/joshuaborn/census-targets/releases/download/v1.0.1/census_targets_adults.csv)
 
-Both links point to the latest release, so most statistical programming languages can read the file directly from the URL without a separate download step; see "Example Programs" below.
+These links point to a stable release download URL, so most statistical programming languages can read the file directly from the URL without a separate download step; see "Example Programs" below.
 
 The PEP age groups have a group for 15 to 19 years of age. For raking surveys of adults, this group needs to be broken down into a group for 18 to 19 years of age, which is why the second `census_targets_adults.csv` file exists.
 
 If you want only counts of adults, use `census_targets_adults.csv`. Otherwise, use `census_targets.csv`.
+
+If you're working in Excel or another spreadsheet program instead, four pre-pivoted wide-format workbooks are also available; see "Using the Files in Excel or Another Spreadsheet Program" at the end of this Quick Start section.
 
 ### Picking a Race Categorization Scheme
 
@@ -209,6 +211,13 @@ The tables below show excerpts of real output from the example programs.
 | 1975 | 565649 | 1233546 | 988450 | 819735 | 687144 |
 | 1976 | 579151 | 1275037 | 1064461 | 832203 | 706288 |
 
+### Using the Files in Excel or Another Spreadsheet Program
+
+The steps above assume you're working in a statistical programming language, which is the primary way these files are meant to be used. If you're working in Excel or another spreadsheet program instead, four pre-pivoted wide-format workbooks are also available, so you don't need to do the grouping and pivoting steps above yourself:
+
+- [`census_targets_wide.xlsx`](https://github.com/joshuaborn/census-targets/releases/download/v1.1.0/census_targets_wide.xlsx) and [`census_targets_wide_adults.xlsx`](https://github.com/joshuaborn/census-targets/releases/download/v1.1.0/census_targets_wide_adults.xlsx): one sheet per race scheme (`race2`, `race3`, `race4`, `race6`), one row per year, and one column per Race/Sex/AgeGroup combination. Pick the sheet matching the scheme and year range you need, the same way you'd pick a `RaceScheme` above.
+- [`census_targets_wide_hispanic.xlsx`](https://github.com/joshuaborn/census-targets/releases/download/v1.1.0/census_targets_wide_hispanic.xlsx) and [`census_targets_wide_adults_hispanic.xlsx`](https://github.com/joshuaborn/census-targets/releases/download/v1.1.0/census_targets_wide_adults_hispanic.xlsx): the same layout, but with a Hispanic-origin breakdown included in each column. These only have `race4` (1980-1999) and `race6` (2000-2024) sheets, since those two schemes together cover the entire 1980-2024 range over which Hispanic origin data exists.
+
 ## Variables
 
 The contents of the output files are summarized below. In the long-table format in which the files are distributed, each row has a `Population` column that is the count for that cell, and the other variables define the cell.
@@ -274,6 +283,8 @@ The file `census_targets.Rmd` in this repo is the canonical definition of what d
 The work to collect these counts started in another, private Git repository where I do my statistical analysis work. I decided to extract the work and make it generic enough to be reused.
 
 `census_targets.Rmd` itself was written by Claude Code at my direction, based on previous code I had written the first time I needed PEP counts for survey weight adjustment. I then proofread the code in `census_targets.Rmd` to make sure there were no errors in the calculations. If anyone finds any issues in the way these counts are calculated, please bring them to my attention by opening a GitHub issue.
+
+The four wide-format `.xlsx` workbooks described in "Using the Files in Excel or Another Spreadsheet Program" above are built by a second script, `wide_format.Rmd`. Rather than pulling from Census directly, it takes the two published long-table CSVs as its own input, the same way an external user would, and pivots them into the spreadsheet-friendly workbooks. It's a downstream convenience step on top of the real data pipeline, not a second independent one.
 
 ### Data Sources and Documentation
 

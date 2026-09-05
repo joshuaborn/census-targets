@@ -3,6 +3,10 @@ census_targets_cache/
 census_targets_files/
 census_targets.knit.md
 census_targets.html
+wide_format_cache/
+wide_format_files/
+wide_format.knit.md
+wide_format.html
 .Rhistory
 .RData
 .Rproj.user

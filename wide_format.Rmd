@@ -1,0 +1,175 @@
+---
+title: "Census PEP Population Targets: Wide-Format Workbooks"
+author: "Joshua Born"
+output:
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(here)
+library(readr)
+library(tidyr)
+library(writexl)
+
+artifacts_dir <- here("output")
+dir.create(artifacts_dir, showWarnings = FALSE, recursive = TRUE)
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  tidy = TRUE
+)
+```
+
+## Overview
+
+Builds four wide-format `.xlsx` workbooks for spreadsheet users, from the
+two long/tidy CSVs this project publishes
+(`census_targets.csv`, `census_targets_adults.csv`) -- the same files
+described in the README's "Picking a File" section, consumed here exactly
+as an external user would consume them, not any in-memory objects from
+`census_targets.Rmd`.
+
+Each workbook has one sheet per `RaceScheme`, with one row per `Year` and
+one column per remaining combination of variables. Two workbooks
+(`census_targets_wide.xlsx`, `census_targets_wide_adults.xlsx`) cover all
+four race schemes (`race2`, `race3`, `race4`, `race6`) but sum away the
+`HispanicOrigin` split, since that split only exists from 1980 on and
+therefore isn't available for every sheet's full year range. The other two
+workbooks (`census_targets_wide_hispanic.xlsx`,
+`census_targets_wide_adults_hispanic.xlsx`) keep the `HispanicOrigin`
+split, and so are limited to the `race4` (1980-1999) and `race6`
+(2000-2024) sheets, which together cover the entire 1980-2024 span over
+which `HispanicOrigin` is available.
+
+```{r read-inputs}
+census_targets <- read_csv(file.path(artifacts_dir, "census_targets.csv"), show_col_types = FALSE)
+census_targets_adults <- read_csv(file.path(artifacts_dir, "census_targets_adults.csv"), show_col_types = FALSE)
+```
+
+## Main Wide Workbooks (No Hispanic-Origin Split)
+
+For each `RaceScheme`, this collapses `HispanicOrigin` by summing it away,
+then pivots so that each row is a `Year` and each column is a
+`Race_Sex_AgeGroup` combination.
+
+```{r wide-no-hispanic-function}
+race_schemes <- c("race2", "race3", "race4", "race6")
+
+build_wide_sheets <- function(long_data) {
+  sheets <- lapply(race_schemes, function(scheme) {
+    long_data |>
+      filter(RaceScheme == scheme) |>
+      group_by(Year, Race, Sex, AgeGroup) |>
+      summarize(Population = sum(Population), .groups = "drop") |>
+      mutate(Cell = paste(Race, Sex, AgeGroup, sep = "_")) |>
+      select(Year, Cell, Population) |>
+      pivot_wider(id_cols = Year, names_from = Cell, values_from = Population) |>
+      arrange(Year)
+  })
+  names(sheets) <- race_schemes
+  sheets
+}
+
+wide_sheets <- build_wide_sheets(census_targets)
+wide_adults_sheets <- build_wide_sheets(census_targets_adults)
+
+write_xlsx(wide_sheets, file.path(artifacts_dir, "census_targets_wide.xlsx"))
+write_xlsx(wide_adults_sheets, file.path(artifacts_dir, "census_targets_wide_adults.xlsx"))
+```
+
+`census_targets_wide.xlsx` and `census_targets_wide_adults.xlsx` have now
+been written, each with sheets `r paste(race_schemes, collapse = ", ")`.
+
+The check below verifies that, for every sheet, the total population in
+the wide sheet matches the total population in the corresponding filtered
+long data. All values should be exactly zero.
+
+```{r check-wide-no-hispanic, dependson=c("wide-no-hispanic-function", "read-inputs")}
+check_wide_sums <- function(long_data, wide_sheets) {
+  bind_rows(lapply(race_schemes, function(scheme) {
+    long_total <- long_data |>
+      filter(RaceScheme == scheme) |>
+      summarize(Population = sum(Population)) |>
+      pull(Population)
+
+    wide_total <- wide_sheets[[scheme]] |>
+      select(-Year) |>
+      summarize(across(everything(), \(x) sum(x, na.rm = TRUE))) |>
+      rowSums()
+
+    tibble(RaceScheme = scheme, Diff = wide_total - long_total)
+  }))
+}
+
+bind_rows(
+  AllAges = check_wide_sums(census_targets, wide_sheets),
+  Adults = check_wide_sums(census_targets_adults, wide_adults_sheets),
+  .id = "File"
+)
+```
+
+## Hispanic-Origin Wide Workbooks
+
+For `race4` (1980-1999) and `race6` (2000-2024), this pivots without
+summing away `HispanicOrigin`, so each column is a
+`Race_Sex_AgeGroup_HispanicOrigin` combination.
+
+```{r wide-hispanic-function}
+hispanic_schemes <- c("race4", "race6")
+
+build_wide_hispanic_sheets <- function(long_data) {
+  sheets <- lapply(hispanic_schemes, function(scheme) {
+    long_data |>
+      filter(RaceScheme == scheme, !is.na(HispanicOrigin)) |>
+      mutate(Cell = paste(Race, Sex, AgeGroup, HispanicOrigin, sep = "_")) |>
+      select(Year, Cell, Population) |>
+      pivot_wider(id_cols = Year, names_from = Cell, values_from = Population) |>
+      arrange(Year)
+  })
+  names(sheets) <- hispanic_schemes
+  sheets
+}
+
+wide_hispanic_sheets <- build_wide_hispanic_sheets(census_targets)
+wide_adults_hispanic_sheets <- build_wide_hispanic_sheets(census_targets_adults)
+
+write_xlsx(wide_hispanic_sheets, file.path(artifacts_dir, "census_targets_wide_hispanic.xlsx"))
+write_xlsx(wide_adults_hispanic_sheets, file.path(artifacts_dir, "census_targets_wide_adults_hispanic.xlsx"))
+```
+
+`census_targets_wide_hispanic.xlsx` and
+`census_targets_wide_adults_hispanic.xlsx` have now been written, each with
+sheets `r paste(hispanic_schemes, collapse = ", ")`.
+
+The check below verifies that, for every sheet, the total population in
+the wide sheet matches the total population in the corresponding filtered
+long data (restricted to rows with a non-missing `HispanicOrigin`). All
+values should be exactly zero.
+
+```{r check-wide-hispanic, dependson=c("wide-hispanic-function", "read-inputs")}
+check_wide_hispanic_sums <- function(long_data, wide_sheets) {
+  bind_rows(lapply(hispanic_schemes, function(scheme) {
+    long_total <- long_data |>
+      filter(RaceScheme == scheme, !is.na(HispanicOrigin)) |>
+      summarize(Population = sum(Population)) |>
+      pull(Population)
+
+    wide_total <- wide_sheets[[scheme]] |>
+      select(-Year) |>
+      summarize(across(everything(), \(x) sum(x, na.rm = TRUE))) |>
+      rowSums()
+
+    tibble(RaceScheme = scheme, Diff = wide_total - long_total)
+  }))
+}
+
+bind_rows(
+  AllAges = check_wide_hispanic_sums(census_targets, wide_hispanic_sheets),
+  Adults = check_wide_hispanic_sums(census_targets_adults, wide_adults_hispanic_sheets),
+  .id = "File"
+)
+```
