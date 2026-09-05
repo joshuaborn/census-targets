@@ -13,12 +13,14 @@ This repository contains two files that collect counts of the resident populatio
 
 The two files are
 
-- `output/census_targets_by_age.csv`
-- `output/census_targets_adults_by_age.csv`
+- [`census_targets_by_age.csv`](https://github.com/joshuaborn/census-targets/releases/download/v1.0.0/census_targets_by_age.csv)
+- [`census_targets_adults_by_age.csv`](https://github.com/joshuaborn/census-targets/releases/download/v1.0.0/census_targets_adults_by_age.csv)
 
-The PEP age groups have a group for 15 to 19 years of age. For raking surveys of adults, this group needs to be broken down into a group for 18 to 19 years of age, which is why the second `output/census_targets_adults_by_age.csv` file exists.
+Both links point to the latest release, so most statistical programming languages can read the file directly from the URL without a separate download step; see "Example Programs" below.
 
-If you want only counts of adults, use `output/census_targets_adults_by_age.csv`. Otherwise, use `output/census_targets_by_age.csv`.
+The PEP age groups have a group for 15 to 19 years of age. For raking surveys of adults, this group needs to be broken down into a group for 18 to 19 years of age, which is why the second `census_targets_adults_by_age.csv` file exists.
+
+If you want only counts of adults, use `census_targets_adults_by_age.csv`. Otherwise, use `census_targets_by_age.csv`.
 
 ### Picking a Race Categorization Scheme
 
