@@ -252,7 +252,7 @@ The contents of the output files are summarized below. In the long-table format 
 
 ## Why You Shouldn't Be Using American Community Survey (ACS) for This
 
-Many tutorials on survey weight adjustment &mdash; called "post-stratification" (if uni-dimensional), "raking" (if multi-dimensional), "calibration" (if model-based), "iterative proportional fitting" (for a more general concept in mathematics) &mdash;  suggest using Census's American Community Survey (ACS) to get target counts for the raking. However, this is entirely the wrong approach.
+Many tutorials on survey weight adjustment &mdash; called "post-stratification" (if uni-dimensional), "raking" (if multi-dimensional), "calibration" (if model-based), "iterative proportional fitting" (for a more general concept in mathematics) &mdash;  suggest using Census's American Community Survey (ACS) to get target counts for the raking. However, this is the wrong approach, and Census's own guidance agrees: their [page comparing ACS data to other Census data products](https://www.census.gov/programs-surveys/acs/guidance/comparing-acs-data.html) says "if you are looking for population totals, we recommend the 2020 Census or Population Estimates Program," and that ACS should be used "to obtain population characteristics (percents, means, medians, and rates) rather than estimates of population totals."
 
 Despite being the wrong approach, using the ACS for census targets is common advice. Here is a short list of tutorials that suggest using the ACS for survey weight adjustment targets:
 
