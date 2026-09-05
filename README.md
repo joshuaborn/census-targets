@@ -1,6 +1,6 @@
 # Census Population Targets
 
-This repository contains two files that collect counts of the resident population of the United States from the U.S. Census Bureau's [Population Estimates Program (PEP)](https://www.census.gov/programs-surveys/popest/about.html) for years 1900 to 2024. These counts are useful for survey weight adjustment &mdash; as targets for post-stratification, raking (iterative proportional fitting), or calibration &mdash; or for denominators in prevalence estimates. 
+This repository contains two files that collect counts of the resident population of the United States from the U.S. Census Bureau's [Population Estimates Program (PEP)](https://www.census.gov/programs-surveys/popest/about.html) for years 1900 to 2025. These counts are useful for survey weight adjustment &mdash; as targets for post-stratification, raking (iterative proportional fitting), or calibration &mdash; or for denominators in prevalence estimates. 
 
 ## Quick Start
 
@@ -13,8 +13,8 @@ This repository contains two files that collect counts of the resident populatio
 
 If you're using a statistical programming language (R, Python, SAS, Stata, SPSS), use one of the two long-table files:
 
-- [`census_targets.csv`](https://github.com/joshuaborn/census-targets/releases/download/v1.0.1/census_targets.csv)
-- [`census_targets_adults.csv`](https://github.com/joshuaborn/census-targets/releases/download/v1.0.1/census_targets_adults.csv)
+- [`census_targets.csv`](https://github.com/joshuaborn/census-targets/releases/download/v2.0.0/census_targets.csv)
+- [`census_targets_adults.csv`](https://github.com/joshuaborn/census-targets/releases/download/v2.0.0/census_targets_adults.csv)
 
 These links point to a stable release download URL, so most statistical programming languages can read the file directly from the URL without a separate download step; see "Example Programs" below.
 
@@ -30,10 +30,10 @@ The PEP has changed the way it classified race three times so far. Therefore, th
 
 | Scheme | Values | Years available |
 |---|---|---|
-| `race2` | White, Nonwhite | 1900-2024 |
-| `race3` | White, Black, Other | 1960-2024 |
+| `race2` | White, Nonwhite | 1900-2025 |
+| `race3` | White, Black, Other | 1960-2025 |
 | `race4` | White, Black, AIAN, API | 1980-1999 |
-| `race6` | White, Black, AIAN, Asian, NHPI, TwoOrMore | 2000-2024 |
+| `race6` | White, Black, AIAN, Asian, NHPI, TwoOrMore | 2000-2025 |
 
 Once you pick the scheme you want to use, you should filter the data to include only the rows where the `RaceScheme` variable equals your chosen scheme name.
 
@@ -215,8 +215,8 @@ The tables below show excerpts of real output from the example programs.
 
 The steps above assume you're working in a statistical programming language, which is the primary way these files are meant to be used. If you're working in Excel or another spreadsheet program instead, four pre-pivoted wide-format workbooks are also available, so you don't need to do the grouping and pivoting steps above yourself:
 
-- [`census_targets_wide.xlsx`](https://github.com/joshuaborn/census-targets/releases/download/v1.1.0/census_targets_wide.xlsx) and [`census_targets_wide_adults.xlsx`](https://github.com/joshuaborn/census-targets/releases/download/v1.1.0/census_targets_wide_adults.xlsx): one sheet per race scheme (`race2`, `race3`, `race4`, `race6`), one row per year, and one column per Race/Sex/AgeGroup combination. Pick the sheet matching the scheme and year range you need, the same way you'd pick a `RaceScheme` above.
-- [`census_targets_wide_hispanic.xlsx`](https://github.com/joshuaborn/census-targets/releases/download/v1.1.0/census_targets_wide_hispanic.xlsx) and [`census_targets_wide_adults_hispanic.xlsx`](https://github.com/joshuaborn/census-targets/releases/download/v1.1.0/census_targets_wide_adults_hispanic.xlsx): the same layout, but with a Hispanic-origin breakdown included in each column. These only have `race4` (1980-1999) and `race6` (2000-2024) sheets, since those two schemes together cover the entire 1980-2024 range over which Hispanic origin data exists.
+- [`census_targets_wide.xlsx`](https://github.com/joshuaborn/census-targets/releases/download/v2.0.0/census_targets_wide.xlsx) and [`census_targets_wide_adults.xlsx`](https://github.com/joshuaborn/census-targets/releases/download/v2.0.0/census_targets_wide_adults.xlsx): one sheet per race scheme (`race2`, `race3`, `race4`, `race6`), one row per year, and one column per Race/Sex/AgeGroup combination. Pick the sheet matching the scheme and year range you need, the same way you'd pick a `RaceScheme` above.
+- [`census_targets_wide_hispanic.xlsx`](https://github.com/joshuaborn/census-targets/releases/download/v2.0.0/census_targets_wide_hispanic.xlsx) and [`census_targets_wide_adults_hispanic.xlsx`](https://github.com/joshuaborn/census-targets/releases/download/v2.0.0/census_targets_wide_adults_hispanic.xlsx): the same layout, but with a Hispanic-origin breakdown included in each column. These only have `race4` (1980-1999) and `race6` (2000-2025) sheets, since those two schemes together cover the entire 1980-2025 range over which Hispanic origin data exists.
 
 ## Variables
 
@@ -224,31 +224,31 @@ The contents of the output files are summarized below. In the long-table format 
 
 | Variable | Value | Description | Years available |
 |---|---|---|---|
-| `Year` | — | July 1 reference year of the estimate | 1900-2024 |
-| `Sex` | Male | | 1900-2024 |
-| | Female | | 1900-2024 |
-| `AgeGroup` | Under 5, 5 to 9, ..., 80 to 84 | 5-year bins | 1900-2024 |
-| | 85 years and over | | 1940-2024 |
+| `Year` | — | July 1 reference year of the estimate | 1900-2025 |
+| `Sex` | Male | | 1900-2025 |
+| | Female | | 1900-2025 |
+| `AgeGroup` | Under 5, 5 to 9, ..., 80 to 84 | 5-year bins | 1900-2025 |
+| | 85 years and over | | 1940-2025 |
 | | 75 years and over | catch-all in place of the 75-79/80-84/85+ split | 1900-1939 |
-| | 15 to 19 | | 1900-2024 (all-ages file only) |
-| | 18 to 19 years | in place of "15 to 19" | 1900-2024 (adults file only) |
-| `Population` | — | estimated civilian resident population of the cell | 1900-2024 |
-| `RaceScheme` | race2 | 2-category scheme | 1900-2024 |
-| | race3 | 3-category scheme | 1960-2024 |
+| | 15 to 19 | | 1900-2025 (all-ages file only) |
+| | 18 to 19 years | in place of "15 to 19" | 1900-2025 (adults file only) |
+| `Population` | — | estimated civilian resident population of the cell | 1900-2025 |
+| `RaceScheme` | race2 | 2-category scheme | 1900-2025 |
+| | race3 | 3-category scheme | 1960-2025 |
 | | race4 | 4-category scheme | 1980-1999 |
-| | race6 | 6-category scheme | 2000-2024 |
-| `Race` | White | | 1900-2024 |
-| | Nonwhite | `race2`'s residual; no internal breakdown | 1900-2024 |
-| | Black | | 1960-2024 |
-| | Other | `race3`'s residual; not the same population as `Nonwhite` | 1960-2024 |
-| | AIAN | American Indian and Alaska Native | 1980-2024 |
+| | race6 | 6-category scheme | 2000-2025 |
+| `Race` | White | | 1900-2025 |
+| | Nonwhite | `race2`'s residual; no internal breakdown | 1900-2025 |
+| | Black | | 1960-2025 |
+| | Other | `race3`'s residual; not the same population as `Nonwhite` | 1960-2025 |
+| | AIAN | American Indian and Alaska Native | 1980-2025 |
 | | API | Asian and Pacific Islander, `race4`'s combined category | 1980-1999 |
-| | Asian | | 2000-2024 |
-| | NHPI | Native Hawaiian and Pacific Islander, split out of `API` | 2000-2024 |
-| | TwoOrMore | Two or More Races | 2000-2024 |
+| | Asian | | 2000-2025 |
+| | NHPI | Native Hawaiian and Pacific Islander, split out of `API` | 2000-2025 |
+| | TwoOrMore | Two or More Races | 2000-2025 |
 | `HispanicOrigin` | NA | no Hispanic-origin data exists in the source for that year | 1900-1979 |
-| | Hispanic | | 1980-2024 |
-| | NonHispanic | | 1980-2024 |
+| | Hispanic | | 1980-2025 |
+| | NonHispanic | | 1980-2025 |
 
 ## Why You Shouldn't Be Using American Community Survey (ACS) for This
 
@@ -293,11 +293,11 @@ The table below summarizes all the different data inputs that were used as input
 | 1990-1999 | Census, [1990-2000 intercensal county file directory](https://www2.census.gov/programs-surveys/popest/tables/1990-2000/intercensal/st-co/) | 10 `stch-icen{year}.txt` flat files, one per year | [1990-2000 intercensal file-layout documentation](https://www2.census.gov/programs-surveys/popest/technical-documentation/file-layouts/1990-2000/stch-intercensal_layout.txt) and [Population Estimates Categorical Variables, 1990-2000](https://www.census.gov/data/developers/data-sets/popest-popproj/popest/popest-vars/1990-2000.html) |
 | 2000-2009 | `censusapi` dataset [`pep/int_charagegroups`, vintage 2000](https://www.census.gov/data/developers/data-sets/popest-popproj/popest/2000-2010.html) | — | [`pep/int_charagegroups` variables page](https://api.census.gov/data/2000/pep/int_charagegroups/variables.html) |
 | 2010-2019 | Census, [National Intercensal Population by Characteristics: 2010-2020](https://www.census.gov/data/datasets/time-series/demo/popest/intercensal-2010-2020-national-detail.html) | `nc-est2020int-asr6h.xlsx` | [Methodology, Limitations and Applications of the 2010-2020 Intercensal Population and Housing Unit Estimates](https://www.census.gov/newsroom/blogs/research-matters/2024/11/2010-2020-intercensal-population-and-housing-unit-estimates.html) |
-| 2020-2024 | Census, [National Population by Characteristics: 2020-2025](https://www.census.gov/data/datasets/time-series/demo/popest/2020s-national-detail.html) | `nc-est2024-alldata-c-file{02,04,06,08,10}.csv`, from the [Vintage 2024 datasets directory](https://www2.census.gov/programs-surveys/popest/datasets/2020-2024/national/asrh/) | [`NC-EST2024-ALLDATA` file-layout documentation](https://www2.census.gov/programs-surveys/popest/technical-documentation/file-layouts/2020-2024/NC-EST2024-ALLDATA.pdf) |
+| 2020-2025 | Census, [National Population by Characteristics: 2020-2025](https://www.census.gov/data/datasets/time-series/demo/popest/2020s-national-detail.html) | `nc-est2025-alldata-c-file{01..14}.csv`, from the [Vintage 2025 datasets directory](https://www2.census.gov/programs-surveys/popest/datasets/2020-2025/national/asrh/) | [`NC-EST2025-ALLDATA` file-layout documentation](https://www2.census.gov/programs-surveys/popest/technical-documentation/file-layouts/2020-2025/NC-EST2025-ALLDATA.pdf) |
 
 The PEP releases two kinds of population estimates: postcensal and intercensal. The complete enumeration of the U.S. population occurs just once per decade. For nine years in between a decennial census, the PEP creates estimates by calculating changes to the decennial census count with vital statistics (births and deaths) and migration statistics. The postcensal estimates extrapolate off of the most recent decennial census that preceded the year of the estimates. The intercensal estimates interpolate between both the preceding decennial census and the following decennial census.
 
-Generally, intercensal estimates are more accurate. As can be seen in the above table, intercensal estimates were used for most years in this data set. However, since the 2030 census has not happened yet, postcensal estimates are used for the 2020-2024 years.
+Generally, intercensal estimates are more accurate. As can be seen in the above table, intercensal estimates were used for most years in this data set. However, since the 2030 census has not happened yet, postcensal estimates are used for the 2020-2025 years.
 
 ## Issues with the PEP Data
 
@@ -336,9 +336,9 @@ The "18 to 19 year olds" counts in years 1990-2019 are the only approximate coun
 
 In some years, the abbreviation for the American Indian/Alaska Native group is "AIAE" and in others it is "AIAN." This project made it consistently "AIAN" throughout.
 
-#### 2020-2024 Monthly Files
+#### 2020-2025 Monthly Files
 
-The 2020-2024 postcensal estimates are available for every month of the year. To align with every other era's July 1 reference date, only the July estimates are used.
+The 2020-2025 postcensal estimates are available for every month of the year. To align with every other era's July 1 reference date, only the July estimates are used.
 
 #### Zipped 1980s Files
 
@@ -346,23 +346,23 @@ Unlike all the other files sourced from Census, the 1980s RQI files are distribu
 
 ## Trend Plots
 
-![Total U.S. resident population, 1900-2024](R/plots/trend_total_allages.png)
+![Total U.S. resident population, 1900-2025](R/plots/trend_total_allages.png)
 
-![Total U.S. adult resident population, 1900-2024](R/plots/trend_total_adults.png)
+![Total U.S. adult resident population, 1900-2025](R/plots/trend_total_adults.png)
 
-![U.S. resident population by sex, 1900-2024](R/plots/trend_by_sex.png)
+![U.S. resident population by sex, 1900-2025](R/plots/trend_by_sex.png)
 
-![U.S. resident population by race, 2-category scheme, 1900-2024](R/plots/trend_by_race_race2.png)
+![U.S. resident population by race, 2-category scheme, 1900-2025](R/plots/trend_by_race_race2.png)
 
-![U.S. resident population by race, 3-category scheme, 1960-2024](R/plots/trend_by_race_race3.png)
+![U.S. resident population by race, 3-category scheme, 1960-2025](R/plots/trend_by_race_race3.png)
 
 ![U.S. resident population by race, 4-category scheme, 1980-1999](R/plots/trend_by_race_race4.png)
 
-![U.S. resident population by race, 6-category scheme, 2000-2024](R/plots/trend_by_race_race6.png)
+![U.S. resident population by race, 6-category scheme, 2000-2025](R/plots/trend_by_race_race6.png)
 
-![U.S. resident population by Hispanic origin, 1980-2024](R/plots/trend_by_hispanic.png)
+![U.S. resident population by Hispanic origin, 1980-2025](R/plots/trend_by_hispanic.png)
 
-![U.S. resident population by age group, 1900-2024](R/plots/trend_by_agegroup.png)
+![U.S. resident population by age group, 1900-2025](R/plots/trend_by_agegroup.png)
 
 ## License
 

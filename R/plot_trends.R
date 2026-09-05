@@ -1,4 +1,4 @@
-# Reads the published census_targets_by_age.csv / census_targets_adults_by_age.csv
+# Reads the published census_targets.csv / census_targets_adults.csv
 # and writes trend-line PNGs to R/plots/.
 #
 # Every plot below filters to exactly one RaceScheme before summing Population.
@@ -21,8 +21,8 @@ library(here)
 plots_dir <- here("R", "plots")
 dir.create(plots_dir, showWarnings = FALSE, recursive = TRUE)
 
-by_age <- read_csv(here("output", "census_targets_by_age.csv"), show_col_types = FALSE)
-adults_by_age <- read_csv(here("output", "census_targets_adults_by_age.csv"), show_col_types = FALSE)
+by_age <- read_csv(here("output", "census_targets.csv"), show_col_types = FALSE)
+adults_by_age <- read_csv(here("output", "census_targets_adults.csv"), show_col_types = FALSE)
 
 age_group_order <- c(
   "Under 5", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29",
@@ -37,7 +37,7 @@ save_trend_plot <- function(plot, filename) {
   ggsave(file.path(plots_dir, filename), plot, width = 8, height = 5, dpi = 150)
 }
 
-# 1. Total US resident population, all ages, 1900-2024.
+# 1. Total US resident population, all ages, 1900-2025.
 trend_total_allages <- by_age |>
   filter(RaceScheme == "race2") |>
   group_by(Year) |>
@@ -48,11 +48,11 @@ save_trend_plot(
     geom_line() +
     geom_point(size = 0.5) +
     scale_y_continuous(labels = comma) +
-    labs(title = "Total U.S. Resident Population, 1900-2024", y = "Population (all ages)"),
+    labs(title = "Total U.S. Resident Population, 1900-2025", y = "Population (all ages)"),
   "trend_total_allages.png"
 )
 
-# 2. Total US resident population, ages 18+, 1900-2024.
+# 2. Total US resident population, ages 18+, 1900-2025.
 trend_total_adults <- adults_by_age |>
   filter(RaceScheme == "race2") |>
   group_by(Year) |>
@@ -63,11 +63,11 @@ save_trend_plot(
     geom_line() +
     geom_point(size = 0.5) +
     scale_y_continuous(labels = comma) +
-    labs(title = "Total U.S. Adult (18+) Resident Population, 1900-2024", y = "Population (ages 18+)"),
+    labs(title = "Total U.S. Adult (18+) Resident Population, 1900-2025", y = "Population (ages 18+)"),
   "trend_total_adults.png"
 )
 
-# 3. By Sex, all ages, 1900-2024.
+# 3. By Sex, all ages, 1900-2025.
 trend_by_sex <- by_age |>
   filter(RaceScheme == "race2") |>
   group_by(Year, Sex) |>
@@ -78,7 +78,7 @@ save_trend_plot(
     geom_line() +
     geom_point(size = 0.5) +
     scale_y_continuous(labels = comma) +
-    labs(title = "U.S. Resident Population by Sex, 1900-2024", y = "Population (all ages)"),
+    labs(title = "U.S. Resident Population by Sex, 1900-2025", y = "Population (all ages)"),
   "trend_by_sex.png"
 )
 
@@ -101,12 +101,12 @@ plot_by_race <- function(scheme, title) {
   )
 }
 
-plot_by_race("race2", "U.S. Resident Population by Race (2-category scheme), 1900-2024")
-plot_by_race("race3", "U.S. Resident Population by Race (3-category scheme), 1960-2024")
+plot_by_race("race2", "U.S. Resident Population by Race (2-category scheme), 1900-2025")
+plot_by_race("race3", "U.S. Resident Population by Race (3-category scheme), 1960-2025")
 plot_by_race("race4", "U.S. Resident Population by Race (4-category scheme), 1980-1999")
-plot_by_race("race6", "U.S. Resident Population by Race (6-category scheme), 2000-2024")
+plot_by_race("race6", "U.S. Resident Population by Race (6-category scheme), 2000-2025")
 
-# 8. By Hispanic origin, 1980-2024 (the only years HispanicOrigin is populated).
+# 8. By Hispanic origin, 1980-2025 (the only years HispanicOrigin is populated).
 trend_by_hispanic <- by_age |>
   filter(RaceScheme == "race2", !is.na(HispanicOrigin)) |>
   group_by(Year, HispanicOrigin) |>
@@ -117,11 +117,11 @@ save_trend_plot(
     geom_line() +
     geom_point(size = 0.5) +
     scale_y_continuous(labels = comma) +
-    labs(title = "U.S. Resident Population by Hispanic Origin, 1980-2024", y = "Population (all ages)"),
+    labs(title = "U.S. Resident Population by Hispanic Origin, 1980-2025", y = "Population (all ages)"),
   "trend_by_hispanic.png"
 )
 
-# 9. By AgeGroup, all ages, 1900-2024.
+# 9. By AgeGroup, all ages, 1900-2025.
 trend_by_agegroup <- by_age |>
   filter(RaceScheme == "race2") |>
   group_by(Year, AgeGroup) |>
@@ -133,7 +133,7 @@ save_trend_plot(
     geom_line() +
     geom_point(size = 0.5) +
     scale_y_continuous(labels = comma) +
-    labs(title = "U.S. Resident Population by Age Group, 1900-2024", y = "Population"),
+    labs(title = "U.S. Resident Population by Age Group, 1900-2025", y = "Population"),
   "trend_by_agegroup.png"
 )
 

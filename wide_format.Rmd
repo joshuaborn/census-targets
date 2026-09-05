@@ -42,7 +42,7 @@ therefore isn't available for every sheet's full year range. The other two
 workbooks (`census_targets_wide_hispanic.xlsx`,
 `census_targets_wide_adults_hispanic.xlsx`) keep the `HispanicOrigin`
 split, and so are limited to the `race4` (1980-1999) and `race6`
-(2000-2024) sheets, which together cover the entire 1980-2024 span over
+(2000-2025) sheets, which together cover the entire 1980-2025 span over
 which `HispanicOrigin` is available.
 
 ```{r read-inputs}
@@ -114,7 +114,7 @@ bind_rows(
 
 ## Hispanic-Origin Wide Workbooks
 
-For `race4` (1980-1999) and `race6` (2000-2024), this pivots without
+For `race4` (1980-1999) and `race6` (2000-2025), this pivots without
 summing away `HispanicOrigin`, so each column is a
 `Race_Sex_AgeGroup_HispanicOrigin` combination.
 

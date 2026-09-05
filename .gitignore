@@ -11,3 +11,4 @@ wide_format.html
 .RData
 .Rproj.user
 .DS_Store
+.Renviron
